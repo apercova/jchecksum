@@ -1,5 +1,5 @@
-# jchecksum
-
+# jchecksum  
+[ ![Codeship Status for apercova/jchecksum](https://app.codeship.com/projects/bc8527e0-728a-0136-a4f5-16905de121f2/status?branch=master)](https://app.codeship.com/projects/299445)
 ## Java cli utility for calculating hashes using java's MessageDigest class
 
 > Uses QuickCLI to leverage cli command configuration. Check it out [here](https://github.com/apercova/QuickCLI).
