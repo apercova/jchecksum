@@ -8,7 +8,7 @@
 ```bash
   $jchecksum -help 
   
-  [ckecksum]: Calculates checksum from file/text-caption
+  [jchecksum]: Calculates checksum from file/text-caption
      option         aliases                   usage
      ----------     ---------------           -------------------------
      -a             [-algorithm]              Hashing algorithm
