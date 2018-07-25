@@ -31,7 +31,7 @@ import io.apercova.quickcli.ExecutionException;
  * @since 1.0
  *
  */
-@CLICommand(value="ckecksum",description="Calculates checksum from file/text-caption")
+@CLICommand(value="jchecksum",description="Calculates checksum from file/text-caption")
 public final class CheckSum extends Command<Void> {
 	
 	public static final String B64_ENCODING = "B64";
