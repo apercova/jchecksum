@@ -170,7 +170,12 @@ public final class CheckSum extends Command<Void> {
 			if(command != null) {
 				command.printUsage();
 			}
-		} 
+		} finally {
+			try {
+				if(command != null)
+					command.close();
+			} catch (IOException e2) { }
+		}
 		
 	}
 		
