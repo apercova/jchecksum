@@ -53,7 +53,7 @@ public final class CheckSum extends Command<Void> {
 	private Boolean listAlgs;
 	@CLIArgument(name="-lc", usage="List available charsets" )	
 	private Boolean listCs;
-	@CLIArgument(name="-help", usage="List available options" )	
+	@CLIArgument(name="-h", aliases= {"-help"}, usage="List available options" )	
 	private Boolean showHelp;
 	@CLIArgument(name="-m", aliases={"-match"}, usage="Compares suplied pattern against checksum" )
 	private String match;
