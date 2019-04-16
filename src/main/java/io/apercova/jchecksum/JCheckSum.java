@@ -26,6 +26,9 @@ import io.apercova.quickcli.exception.CLIArgumentException;
 import io.apercova.quickcli.exception.ExecutionException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +44,7 @@ import java.util.logging.Logger;
 @CLICommand(value = "jchecksum", description = "Calculates checksum from file/text-caption")
 public final class JCheckSum extends Command<String> {
 
+    public static final String SERIAL_UID_ENCODING = "JUID";
     public static final String B64_ENCODING = "B64";
     public static final String HEX_ENCODING = "HEX";
 
@@ -124,7 +128,13 @@ public final class JCheckSum extends Command<String> {
     private void encode() {
         if (B64_ENCODING.equalsIgnoreCase(encoding)) {
             this.encString = DatatypeConverter.printBase64Binary(this.encbytes);
-        } else {
+        } else if (SERIAL_UID_ENCODING.equalsIgnoreCase(encoding)) {
+            this.encString = DatatypeConverter.printHexBinary(encbytes).toLowerCase();
+            BigInteger bn = new BigInteger(this.encString, 16);
+            BigInteger ml = new BigInteger(Long.MAX_VALUE+"");
+            this.encString = String.valueOf(Math.abs(bn.longValue()));            
+        }
+        else {
             this.encString = DatatypeConverter.printHexBinary(this.encbytes).toLowerCase();
         }
     }

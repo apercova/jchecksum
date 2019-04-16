@@ -53,6 +53,15 @@ public final class CheckSumTest extends Command<Void> {
         assertTrue("Error creating command", command != null);
         assertEquals("Missing sha1(\"1234567890ñ\");alg=iso-8859-1;enc=hex", "534aa90bd7aace87cb732cf472c58933204a097e", command.execute());
 
+        args = new String[]{
+            "-a", "sha1",
+            "-text", "1234567890",
+            "-cs", "iso-8859-1",
+            "-e", "juid"
+        };
+        command = CommandFactory.create(args, JCheckSum.class);
+        assertTrue("Error creating command", command != null);
+        assertEquals("Missing sha1(\"1234567890\");alg=iso-8859-1;enc=juid", "5734283031892443494", command.execute());
     }
 
 }
