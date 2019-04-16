@@ -37,3 +37,6 @@ buildNumber.properties
 #MS VSCode
 .settings/
 .vscode/
+
+#Netbeans conf
+nb-configuration.xml
