@@ -26,9 +26,7 @@ import io.apercova.quickcli.exception.CLIArgumentException;
 import io.apercova.quickcli.exception.ExecutionException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,53 +40,58 @@ import java.util.logging.Logger;
  *
  */
 @CLICommand(value = "jchecksum", description = "Calculates checksum from file/text-caption")
-public final class JCheckSum extends Command<String> {
+public final class JCheckSum extends Command<Void> {
 
     public static final String SERIAL_UID_ENCODING = "JUID";
     public static final String B64_ENCODING = "B64";
     public static final String HEX_ENCODING = "HEX";
 
-    @CLIArgument(name = "-a", aliases = {"-algorithm"}, value = "MD5", usage = "Hashing algorithm")
+    @CLIArgument(name = "-a", aliases = {"--algorithm"}, value = "MD5", usage = "Hashing algorithm")
     @CLIDatatypeConverter(CustomMessageDigestConverter.class)
     private MessageDigest alg;
-    @CLIArgument(name = "-e", aliases = {"-encoding"}, usage = "Output encoding. options: [HEX,B64], default: HEX", value = "HEX")
+    @CLIArgument(name = "-e", aliases = {"--encoding"}, usage = "Output encoding. options: [HEX,B64], default: HEX", value = "HEX")
     private String encoding;
-    @CLIArgument(name = "-f", aliases = {"-file"}, usage = "File Path")
+    @CLIArgument(name = "-eo", aliases = {"--encode-only"}, usage = "If set, source only gets encoded")
+    private Boolean encodeOnly;
+    @CLIArgument(name = "-f", aliases = {"--file"}, usage = "File Path")
     private String file;
-    @CLIArgument(name = "-t", aliases = {"-text"}, usage = "Text caption")
+    @CLIArgument(name = "-t", aliases = {"--text"}, usage = "Text caption")
     private String text;
-    @CLIArgument(name = "-cs", aliases = {"-charset"}, usage = "Encoding charset", value = "UTF-8")
+    @CLIArgument(name = "-cs", aliases = {"--charset"}, usage = "Encoding charset", value = "UTF-8")
     @CLIDatatypeConverter(CustomCharsetConverter.class)
     private Charset cs;
     @CLIArgument(name = "-la", usage = "List available algorithms")
     private Boolean listAlgs;
     @CLIArgument(name = "-lc", usage = "List available charsets")
     private Boolean listCs;
-    @CLIArgument(name = "-h", aliases = {"-help"}, usage = "List available options")
+    @CLIArgument(name = "-le", usage = "List available encoding options")
+    private Boolean listEnc;
+    @CLIArgument(name = "-h", aliases = {"--help"}, usage = "List available options")
     private Boolean showHelp;
-    @CLIArgument(name = "-m", aliases = {"-match"}, usage = "Compares suplied pattern against checksum")
+    @CLIArgument(name = "-m", aliases = {"--match"}, usage = "If set, checksum result gets compared against suplied pattern")
     private String match;
 
-    private byte[] encbytes;
-    private String encString;
-
     @Override
-    public String execute() throws ExecutionException {
-        String res = "";
+    public Void execute() throws ExecutionException {
         if (showHelp) {
             printUsage();
         } else if (listAlgs) {
             listHashAlgorithms();
         } else if (listCs) {
             listCharsets();
+        } else if (listEnc) {
+            listEncoders();
+        } else if (encodeOnly) {
+            encode();
         } else {
-            res = calculateSum();
+            digest();
         }
-        return res;
+        return null;
     }
 
     /**
-     * Calculate sum based on command arguments.
+     * Calculate hash sum based on command arguments.
+     * @return hash sum
      */
     private void digest() {
 
@@ -121,37 +124,41 @@ public final class JCheckSum extends Command<String> {
             text = (text == null) ? "" : text;
             alg.update(text.getBytes(cs));
         }
-
-        encbytes = alg.digest();
+        
+        String encoded = this.encode(alg.digest());
+        if (match != null && !match.isEmpty()) {
+            encoded = String.valueOf(Pattern.matches(match, encoded));
+            writer.printf(locale, "%s", encoded);
+        } else {
+            writer.printf(locale, "%s", encoded);
+        }
     }
 
+    /**
+     * Calculate encoded-only value based on command arguments
+     */
     private void encode() {
+        writer.printf("%s", this.encode(this.text.getBytes(this.cs)));
+    }
+    
+    /**
+     * Encode bytearray based on command arguments
+     * @param bytes source byte array  
+     * @return Encoded string
+     */
+    private String encode(byte[] digest) {
+        String encString;
         if (B64_ENCODING.equalsIgnoreCase(encoding)) {
-            this.encString = DatatypeConverter.printBase64Binary(this.encbytes);
+            encString = DatatypeConverter.printBase64Binary(digest);
         } else if (SERIAL_UID_ENCODING.equalsIgnoreCase(encoding)) {
-            this.encString = DatatypeConverter.printHexBinary(encbytes).toLowerCase();
-            BigInteger bn = new BigInteger(this.encString, 16);
-            BigInteger ml = new BigInteger(Long.MAX_VALUE+"");
-            this.encString = String.valueOf(Math.abs(bn.longValue()));            
+            encString = DatatypeConverter.printHexBinary(digest).toLowerCase();
+            BigInteger bn = new BigInteger(encString, 16);
+            encString = String.valueOf(Math.abs(bn.longValue()));            
         }
         else {
-            this.encString = DatatypeConverter.printHexBinary(this.encbytes).toLowerCase();
+            encString = DatatypeConverter.printHexBinary(digest).toLowerCase();
         }
-    }
-
-    private void print() {
-        if (match != null && !match.isEmpty()) {
-            writer.printf(locale, "%s%n", Pattern.matches(match, this.encString));
-        } else {
-            writer.printf(locale, "%s%n", this.encString);
-        }
-    }
-
-    private String calculateSum() {
-        this.digest();
-        this.encode();
-        this.print();
-        return this.encString;
+        return encString;
     }
 
     /**
@@ -170,10 +177,11 @@ public final class JCheckSum extends Command<String> {
             }
 
             if (!algos.isEmpty()) {
-                writer.printf(locale, " --- Provider %s, version %.2f --- %n", provider.getName(), provider.getVersion());
+                writer.printf(locale, "--- Supported digest algorithms ---%n");
+                writer.printf(locale, "--- Provider %s, version %.2f ---%n", provider.getName(), provider.getVersion());
                 for (Service service : algos) {
                     String algo = service.getAlgorithm();
-                    writer.printf(locale, "Algorithm name: \"%s\"%n", algo);
+                    writer.printf(locale, "%s%n", algo);
                 }
             }
         }
@@ -183,11 +191,22 @@ public final class JCheckSum extends Command<String> {
      * Prints a list of JVM available {@link Charset}.
      */
     private void listCharsets() {
+        writer.printf(locale, "--- Available charsets ---%n");
         for (String k : Charset.availableCharsets().keySet()) {
-            writer.printf(locale, "Charset name: \"%s\"%n", k);
+            writer.printf(locale, "%s%n", k);
         }
     }
 
+    /**
+     * Prints a list of command available encoder options.
+     */
+    private void listEncoders() {
+        writer.printf(locale, "--- Available encoders ---%n");
+        writer.printf(locale, "%s : Hexadecimal (default)%n", HEX_ENCODING);
+        writer.printf(locale, "%s : Base64%n", B64_ENCODING);
+        writer.printf(locale, "%s :Java Serial Version UID%n", SERIAL_UID_ENCODING);
+    }
+    
     /**
      * Execution entry point.
      *
@@ -196,7 +215,7 @@ public final class JCheckSum extends Command<String> {
     public static void main(String[] args) {
 
         Writer writer = new OutputStreamWriter(System.out);
-        Command<String> command = null;
+        Command<Void> command = null;
         try {
             command = CommandFactory.create(args, JCheckSum.class, writer);
             command.execute();
