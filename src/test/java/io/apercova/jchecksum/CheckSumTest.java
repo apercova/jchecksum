@@ -18,65 +18,74 @@ import org.junit.Test;
  * @since 1.0
  *
  */
-
-public final class CheckSumTest extends Command<Void> {
+public final class CheckSumTest {
 
     String[] args;
     Writer writer;
-    
+
     @Before
     public void init() {
     }
 
     @Test
-    public void test() throws Exception {
+    public void test01() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "-a", "sha1",
-            "-t", "",
-            "-cs", "utf-8",
-            "-e", "b64"
+            "-a", "sha1", "-t", "", "-cs", "utf-8", "-e", "b64"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue(command != null);
         command.execute();
-        assertEquals("Missing sha1(\"\");alg=iso-8859-1;enc=b64", "2jmj7l5rSw0yVb/vlWAYkK/YBwk=", writer.toString());
-        
-        writer = new StringWriter();
-        args = new String[]{
-            "-a", "sha1",
-            "-t", "1234567890ñ",
-            "-cs", "iso-8859-1",
-            "-e", "hex"
-        };
-        command = CommandFactory.create(args, JCheckSum.class, writer);
-        assertTrue("Error creating command", command != null);
-        command.execute();
-        assertEquals("Missing sha1(\"1234567890ñ\");alg=iso-8859-1;enc=hex", "534aa90bd7aace87cb732cf472c58933204a097e", writer.toString());
+        assertEquals("Missing sha1(\"\");cs=iso-8859-1;enc=b64", "2jmj7l5rSw0yVb/vlWAYkK/YBwk=", writer.toString());
+    }
 
+    @Test
+    public void test02() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "-a", "sha1",
-            "-t", "1234567890",
-            "-cs", "iso-8859-1",
-            "-e", "juid"
+            "-a", "sha1", "-t", "1234567890ñ", "-cs", "iso-8859-1", "-e", "hex"
         };
-        command = CommandFactory.create(args, JCheckSum.class, writer);
+        JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
-        assertEquals("Missing sha1(\"1234567890\");alg=iso-8859-1;enc=juid", "5734283031892443494", writer.toString());
-        
+        assertEquals("Missing sha1(\"1234567890ñ\");cs=iso-8859-1;enc=hex", "534aa90bd7aace87cb732cf472c58933204a097e", writer.toString());
+    }
+
+    @Test
+    public void test03() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "--text", "1234567890ABCDEF",
-            "--charset", "utf-8",
-            "--encoding", "b64",
-            "--encode-only"
+            "-a", "sha1", "-t", "1234567890", "-cs", "iso-8859-1", "-e", "juid"
         };
-        command = CommandFactory.create(args, JCheckSum.class, writer);
+        JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
+        assertTrue("Error creating command", command != null);
+        command.execute();
+        assertEquals("Missing sha1(\"1234567890\");cs=iso-8859-1;enc=juid", "5734283031892443494", writer.toString());
+    }
+
+    @Test
+    public void test04() throws Exception {
+        writer = new StringWriter();
+        args = new String[]{
+            "--text", "1234567890ABCDEF", "--charset", "utf-8", "--encoding", "b64", "--encode-only"
+        };
+        JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
         assertEquals("Missing sha1(\"1234567890ABCDEF\");alg=utf-8;enc=b64;enc-only", "MTIzNDU2Nzg5MEFCQ0RFRg==", writer.toString());
+    }
+
+    @Test
+    public void test05() throws Exception {
+        writer = new StringWriter();
+        args = new String[]{
+            "--file", "C:\\Users\\alonperezext\\Desktop\\test.txt",
+            "--algorithm", "sha1", "--charset", "utf-8", "--encoding", "b64", "--encode-only"
+        };
+        JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
+        assertTrue("Error creating command", command != null);
+        command.execute();
+        assertEquals("Missing sha1(\"C:\\Users\\alonperezext\\Desktop\\test.txt\");cs=utf-8;enc=b64;enc-only", "VEVNUE9SQUw=", writer.toString());
     }
 
 }

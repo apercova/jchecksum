@@ -17,6 +17,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import io.apercova.jcheksum.converter.CustomCharsetConverter;
 import io.apercova.jcheksum.converter.CustomMessageDigestConverter;
+import io.apercova.jcheksum.converter.UriToFileConverter;
 import io.apercova.quickcli.annotation.CLIArgument;
 import io.apercova.quickcli.annotation.CLICommand;
 import io.apercova.quickcli.annotation.CLIDatatypeConverter;
@@ -24,6 +25,9 @@ import io.apercova.quickcli.Command;
 import io.apercova.quickcli.CommandFactory;
 import io.apercova.quickcli.exception.CLIArgumentException;
 import io.apercova.quickcli.exception.ExecutionException;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
@@ -54,7 +58,8 @@ public final class JCheckSum extends Command<Void> {
     @CLIArgument(name = "-eo", aliases = {"--encode-only"}, usage = "If set, source only gets encoded")
     private Boolean encodeOnly;
     @CLIArgument(name = "-f", aliases = {"--file"}, usage = "File Path")
-    private String file;
+    @CLIDatatypeConverter(UriToFileConverter.class)
+    private File file;
     @CLIArgument(name = "-t", aliases = {"--text"}, usage = "Text caption")
     private String text;
     @CLIArgument(name = "-cs", aliases = {"--charset"}, usage = "Encoding charset", value = "UTF-8")
@@ -81,23 +86,62 @@ public final class JCheckSum extends Command<Void> {
             listCharsets();
         } else if (listEnc) {
             listEncoders();
-        } else if (encodeOnly) {
-            encode();
         } else {
-            digest();
+            if (file != null && !file.isDirectory()) {
+                Logger.getLogger(JCheckSum.class.getName()).log(Level.FINE, "File: %s%n", file.getAbsolutePath());
+            }
+            if (encodeOnly) {
+                encode();
+            } else {
+                digest();
+            }
         }
         return null;
     }
 
     /**
-     * Calculate hash sum based on command arguments.
-     * @return hash sum
+     * Calculate encoded-only value based on command arguments
+     */
+    private void encode() {
+        if (file != null && !file.isDirectory()) {
+            byte[] buffer = new byte[1024];
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BufferedOutputStream bos = new BufferedOutputStream(baos, buffer.length);
+            BufferedInputStream is = null;
+            try {
+                is = new BufferedInputStream(new FileInputStream(file), buffer.length);
+                int read;
+                while ((read = is.read(buffer)) > 0) {
+                    bos.write(buffer, 0, read);
+                    bos.flush();
+                }
+                writer.printf("%s", this.encode(baos.toByteArray()));
+            } catch (IOException e) {
+                writer.printf(locale, "IO error at reading file: %s. %s%n", file, e.getMessage());
+                printUsage();
+            } finally {
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(JCheckSum.class.getName()).log(Level.FINE, ex.getMessage(), ex);
+                }
+            }
+        } else {
+            writer.printf("%s", this.encode(this.text.getBytes(this.cs)));
+        }
+    }
+
+    /**
+     * Calculate digest/hash sum based on command arguments.
+     *
+     * @return digest/hash sum.
      */
     private void digest() {
-
-        byte[] buffer = new byte[1024];
-
-        if (file != null && !(file.length() == 0)) {
+        if (file != null && !file.isDirectory()) {
+            byte[] buffer = new byte[1024];
             BufferedInputStream is = null;
             try {
                 is = new BufferedInputStream(
@@ -124,7 +168,7 @@ public final class JCheckSum extends Command<Void> {
             text = (text == null) ? "" : text;
             alg.update(text.getBytes(cs));
         }
-        
+
         String encoded = this.encode(alg.digest());
         if (match != null && !match.isEmpty()) {
             encoded = String.valueOf(Pattern.matches(match, encoded));
@@ -135,16 +179,10 @@ public final class JCheckSum extends Command<Void> {
     }
 
     /**
-     * Calculate encoded-only value based on command arguments
-     */
-    private void encode() {
-        writer.printf("%s", this.encode(this.text.getBytes(this.cs)));
-    }
-    
-    /**
      * Encode bytearray based on command arguments
-     * @param bytes source byte array  
-     * @return Encoded string
+     *
+     * @param bytes source byte array.
+     * @return Encoded string.
      */
     private String encode(byte[] digest) {
         String encString;
@@ -153,9 +191,8 @@ public final class JCheckSum extends Command<Void> {
         } else if (SERIAL_UID_ENCODING.equalsIgnoreCase(encoding)) {
             encString = DatatypeConverter.printHexBinary(digest).toLowerCase();
             BigInteger bn = new BigInteger(encString, 16);
-            encString = String.valueOf(Math.abs(bn.longValue()));            
-        }
-        else {
+            encString = String.valueOf(Math.abs(bn.longValue()));
+        } else {
             encString = DatatypeConverter.printHexBinary(digest).toLowerCase();
         }
         return encString;
@@ -206,9 +243,9 @@ public final class JCheckSum extends Command<Void> {
         writer.printf(locale, "%s : Base64%n", B64_ENCODING);
         writer.printf(locale, "%s :Java Serial Version UID%n", SERIAL_UID_ENCODING);
     }
-    
+
     /**
-     * Execution entry point.
+     * Execution entry point for standalone use.
      *
      * @param args Command arguments.
      */
