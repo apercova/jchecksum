@@ -1,8 +1,8 @@
-package io.apercova.jcheksum.converter;
+package com.github.apercova.jchecksum.converter;
 
 import java.nio.charset.Charset;
 
-import io.apercova.quickcli.exception.DatatypeConverterException;
+import com.github.apercova.quickcli.exception.DatatypeConverterException;
 
 /**
  * Custom {@link Charset} converter.
@@ -13,7 +13,7 @@ import io.apercova.quickcli.exception.DatatypeConverterException;
  * @since 1.0
  *
  */
-public class CustomCharsetConverter implements io.apercova.quickcli.DatatypeConverter<Charset> {
+public class CustomCharsetConverter implements com.github.apercova.quickcli.DatatypeConverter<Charset> {
 
     @Override
     public Charset parse(String value) throws DatatypeConverterException {

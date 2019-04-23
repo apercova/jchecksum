@@ -1,7 +1,7 @@
-package io.apercova.jchecksum;
+package com.github.apercova.jchecksum;
 
-import io.apercova.quickcli.Command;
-import io.apercova.quickcli.CommandFactory;
+import com.github.apercova.quickcli.Command;
+import com.github.apercova.quickcli.CommandFactory;
 import java.io.StringWriter;
 import java.io.Writer;
 import static org.junit.Assert.assertEquals;

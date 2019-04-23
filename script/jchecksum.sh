@@ -1,12 +1,9 @@
 #!/bin/bash
-
 runJavaHome() {
-	CLASS_PATH=./jchecksum-1.0.1904-jar-with-dependencies.jar
-	$JAVA_HOME/bin/java -cp $CLASS_PATH io.apercova.jchecksum.JCheckSum $@
+	$JAVA_HOME/bin/java -jar jchecksum-1.0.1904.jar $@
 }
 runDefaultJava() {
-	CLASS_PATH=./jchecksum-1.0.1904-jar-with-dependencies.jar
-	java -cp $CLASS_PATH io.apercova.jchecksum.JCheckSum $@
+	java -jar jchecksum-1.0.1904.jar $@
 }
 
 if [ "$JAVA_HOME" == "" ]; then
@@ -27,3 +24,4 @@ if [ "$JAVA_HOME" == "" ]; then
 else
 	runJavaHome "$@"
 fi
+

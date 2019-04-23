@@ -1,8 +1,7 @@
-package io.apercova.jcheksum.converter;
+package com.github.apercova.jchecksum.converter;
 
-import io.apercova.quickcli.DatatypeConverter;
-
-import io.apercova.quickcli.exception.DatatypeConverterException;
+import com.github.apercova.quickcli.DatatypeConverter;
+import com.github.apercova.quickcli.exception.DatatypeConverterException;
 import java.io.File;
 
 /**

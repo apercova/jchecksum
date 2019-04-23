@@ -1,4 +1,4 @@
-package io.apercova.jchecksum;
+package com.github.apercova.jchecksum;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -15,16 +15,16 @@ import java.util.regex.Pattern;
 
 import javax.xml.bind.DatatypeConverter;
 
-import io.apercova.jcheksum.converter.CustomCharsetConverter;
-import io.apercova.jcheksum.converter.CustomMessageDigestConverter;
-import io.apercova.jcheksum.converter.UriToFileConverter;
-import io.apercova.quickcli.annotation.CLIArgument;
-import io.apercova.quickcli.annotation.CLICommand;
-import io.apercova.quickcli.annotation.CLIDatatypeConverter;
-import io.apercova.quickcli.Command;
-import io.apercova.quickcli.CommandFactory;
-import io.apercova.quickcli.exception.CLIArgumentException;
-import io.apercova.quickcli.exception.ExecutionException;
+import com.github.apercova.jchecksum.converter.CustomCharsetConverter;
+import com.github.apercova.jchecksum.converter.CustomMessageDigestConverter;
+import com.github.apercova.jchecksum.converter.UriToFileConverter;
+import com.github.apercova.quickcli.annotation.CLIArgument;
+import com.github.apercova.quickcli.annotation.CLICommand;
+import com.github.apercova.quickcli.annotation.CLIDatatypeConverter;
+import com.github.apercova.quickcli.Command;
+import com.github.apercova.quickcli.CommandFactory;
+import com.github.apercova.quickcli.exception.CLIArgumentException;
+import com.github.apercova.quickcli.exception.ExecutionException;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
