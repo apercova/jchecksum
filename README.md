@@ -24,19 +24,19 @@ $ jchecksum --help
 ```
 ### Examples:
 #### Calculate text hash
-> Calculate hex-encoded (default encoding) md5-hash of text ```password``` (Notice quoted text)
+- Calculate hex-encoded (default encoding) md5-hash of text ```password``` (Notice quoted text)
 ```bash
 $ jchecksum -a md5 -t "password"
 $ 5f4dcc3b5aa765d61d8327deb882cf99
 ```
-> Above code is equivalent to:
+- Above code is equivalent to:
 ```bash
 $ jchecksum -a md5 -t "password" -e hex
 $ 5f4dcc3b5aa765d61d8327deb882cf99
 ```
 
 #### Calculated file hash
-> Calculate b64-encoded sha-256-hash of file ```/home/user/file.txt```
+- Calculate b64-encoded sha-256-hash of file ```/home/user/file.txt```
 ```bash
 $ jchecksum -a sha-256 -e b64 -f /home/user/file.txt
 $ uz2FKQLSUJ4G3n7A+ie8oWxjWfb5qwf3IfK2yYKobLA=
@@ -44,25 +44,25 @@ $ uz2FKQLSUJ4G3n7A+ie8oWxjWfb5qwf3IfK2yYKobLA=
 
 #### Test for matching hash against precalculated hash
 > Using [-m hash] argument, command call returns ```true``` if hash matches against provided precalculated hash. ```false``` otherwise.  
-> Asumming that precalculated hex-encoded md5-hash of ```/home/user/file.txt``` is: ```ebc6b76035669d8e7da4e6daf3e835e8```, test for hex-encoded md5 hash matching as follows (Notice quoted text):
+- Asumming that precalculated hex-encoded md5-hash of ```/home/user/file.txt``` is: ```ebc6b76035669d8e7da4e6daf3e835e8```, test for hex-encoded md5 hash matching as follows (Notice quoted text):
 ```bash
 $ jchecksum -a md5 -f /home/user/file.txt -m "ebc6b76035669d8e7da4e6daf3e835e8"
 $ true
 ```
-> Asumming that precalculated b64-encoded sha1-hash of text ```password``` is: ```W6ph5Mm5Pz8GgiULbPgzG37mj9g=```, test for b64-encoded sha1 hash matching as follows (Notice quoted text):
+- Asumming that precalculated b64-encoded sha1-hash of text ```password``` is: ```W6ph5Mm5Pz8GgiULbPgzG37mj9g=```, test for b64-encoded sha1 hash matching as follows (Notice quoted text):
 ```bash
 $ jchecksum -a sha1 -e b64 -t "password" -m "W6ph5Mm5Pz8GgiULbPgzG37mj9g="
 $ true
 ```
 
 ### Encode-only source value
-> jchecksum can be told to just encode source value both from file or inline-text.
-> Encode inline text as follows:
+> jchecksum can be told to just encode source value both from file or inline-text.  
+- Encode inline text as follows:
 ```bash
 $ jchecksum -t "clear text to encode" -e b64 -eo
 $ Y2xlYXIgdGV4dCB0byBlbmNvZGU=
 ```
-> Encode file ```/home/user/file.txt``` to Base64 as follows:
+- Encode file ```/home/user/file.txt``` to Base64 as follows:
 ```bash
 $ jchecksum -f /home/user/file.txt -e b64 -eo
 $ TAAAAAEUAgAAAAAAwAAAAAAAAEabAAgAIAAAAHobqFSvDNQBehuoVK8M1AF6i9HOrwzUAT ...
