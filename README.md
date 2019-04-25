@@ -6,19 +6,19 @@
 
 #### Usage: 
 ```bash
-  $jchecksum -help 
-  
-  [jchecksum]: Calculates checksum from file/text-caption
+$ jchecksum --help
+[jchecksum]: Calculates checksum from file/text-caption
      option         aliases                   usage
      ----------     ---------------           -------------------------
-     -a             [-algorithm]              Hashing algorithm
-     -e             [-encoding]               Output encoding. options: [HEX,B64], default: HEX
-     -f             [-file]                   File Path
-     -t             [-text]                   Text caption
-     -cs            [-charset]                Encoding charset
+     -a             [--algorithm]             Hashing algorithm
+     -e             [--encoding]              Output encoding. options: [HEX,B64], default: HEX
+     -eo            [--encode-only]           If set, source only gets encoded
+     -f             [--file]                  File Path
+     -t             [--text]                  Text caption
+     -cs            [--charset]               Encoding charset
      -la                                      List available algorithms
      -lc                                      List available charsets
-     -h             [-help]                   List available options
-     -m             [-match]                  Compares suplied pattern against checksum
-
+     -le                                      List available encoding options
+     -h             [--help]                  List available options
+     -m             [--match]                 If set, checksum result gets compared against suplied pattern
 ```
