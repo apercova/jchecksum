@@ -78,14 +78,15 @@ public final class CheckSumTest {
     @Test
     public void test05() throws Exception {
         writer = new StringWriter();
+        String path = getClass().getClassLoader().getResource("com/github/apercova/jchecksum/test.txt").getPath();
         args = new String[]{
-            "--file", "C:\\Users\\alonperezext\\Desktop\\test.txt",
+            "--file", path,
             "--algorithm", "sha1", "--charset", "utf-8", "--encoding", "b64", "--encode-only"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
-        assertEquals("Missing sha1(\"C:\\Users\\alonperezext\\Desktop\\test.txt\");cs=utf-8;enc=b64;enc-only", "VEVNUE9SQUw=", writer.toString());
+        assertEquals("Missing sha1(\""+path+"\");cs=utf-8;enc=b64;enc-only", "MjEzNDU2Nzg5MA==", writer.toString());
     }
 
 }
