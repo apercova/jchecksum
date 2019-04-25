@@ -41,7 +41,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.0.0</version>
                 <configuration>
                 </configuration>
             </plugin>
@@ -49,18 +49,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.6.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-            
+           
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.0.2</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -75,7 +75,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.0.2</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>2.10.4</version>
                 <configuration>
                     <javadocVersion>${maven.compiler.target}</javadocVersion>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -127,9 +127,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.0.2</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
                 <executions>
                     <execution>
