@@ -69,19 +69,19 @@ $ TAAAAAEUAgAAAAAAwAAAAAAAAEabAAgAIAAAAHobqFSvDNQBehuoVK8M1AF6i9HOrwzUAT ...
 ```
 
 ### Special java SerialVersionUID encoding
-> jchecksum can be told to generate java SerialVersionUID Long value just providing ```juid|JUID``` special encoding format as encoding argument.
-> It works well in both hashing mode and encode-only mode but since hashing value is almost unique, it's recommended to use this mode.
-> Encode-only mode:
+> jchecksum can be told to generate java SerialVersionUID Long value just providing ```juid|JUID``` special encoding format as encoding argument.  
+> It works well in both hashing mode and encode-only mode but since hashing value is almost unique, it's recommended to use this mode.  
+- Encode-only mode:
 ```bash
 $ jchecksum -e juid -eo -f /home/user/MyClass.java 
 $ 6250996317149986816
 ```
-> Md5-hashing mode:
+- Md5-hashing mode:
 ```bash
 $ jchecksum -a md5 -e juid -f /home/user/MyClass.java
 $ 9053614978990880232
 ```
-> Sha-512-hashing mode:
+- Sha-512-hashing mode:
 ```bash
 $ jchecksum -a sha-512 -e juid -f /home/user/MyClass.java
 $ 1214078597467355053
