@@ -31,36 +31,36 @@ public final class CheckSumTest {
     public void test01() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "-a", "sha1", "-t", "", "-cs", "utf-8", "-e", "b64"
+            "-a", "sha", "-t", "", "-cs", "utf-8", "-e", "b64"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue(command != null);
         command.execute();
-        assertEquals("Missing sha1(\"\");cs=iso-8859-1;enc=b64", "2jmj7l5rSw0yVb/vlWAYkK/YBwk=", writer.toString());
+        assertEquals("Missing sha(\"\");cs=iso-8859-1;enc=b64", "2jmj7l5rSw0yVb/vlWAYkK/YBwk=", writer.toString());
     }
 
     @Test
     public void test02() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "-a", "sha1", "-t", "1234567890ñ", "-cs", "iso-8859-1", "-e", "hex"
+            "-a", "sha", "-t", "1234567890ñ", "-cs", "iso-8859-1", "-e", "hex"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
-        assertEquals("Missing sha1(\"1234567890ñ\");cs=iso-8859-1;enc=hex", "534aa90bd7aace87cb732cf472c58933204a097e", writer.toString());
+        assertEquals("Missing sha(\"1234567890ñ\");cs=iso-8859-1;enc=hex", "534aa90bd7aace87cb732cf472c58933204a097e", writer.toString());
     }
 
     @Test
     public void test03() throws Exception {
         writer = new StringWriter();
         args = new String[]{
-            "-a", "sha1", "-t", "1234567890", "-cs", "iso-8859-1", "-e", "juid"
+            "-a", "sha", "-t", "1234567890", "-cs", "iso-8859-1", "-e", "juid"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
-        assertEquals("Missing sha1(\"1234567890\");cs=iso-8859-1;enc=juid", "5734283031892443494", writer.toString());
+        assertEquals("Missing sha(\"1234567890\");cs=iso-8859-1;enc=juid", "5734283031892443494", writer.toString());
     }
 
     @Test
@@ -72,7 +72,7 @@ public final class CheckSumTest {
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
         command.execute();
-        assertEquals("Missing sha1(\"1234567890ABCDEF\");alg=utf-8;enc=b64;enc-only", "MTIzNDU2Nzg5MEFCQ0RFRg==", writer.toString());
+        assertEquals("Missing sha(\"1234567890ABCDEF\");alg=utf-8;enc=b64;enc-only", "MTIzNDU2Nzg5MEFCQ0RFRg==", writer.toString());
     }
 
     @Test
@@ -81,7 +81,7 @@ public final class CheckSumTest {
         String path = getClass().getClassLoader().getResource("com/github/apercova/jchecksum/test.txt").getPath();
         args = new String[]{
             "--file", path,
-            "--algorithm", "sha1", "--charset", "utf-8", "--encoding", "b64", "--encode-only"
+            "--algorithm", "sha", "--charset", "utf-8", "--encoding", "b64", "--encode-only"
         };
         JCheckSum command = CommandFactory.create(args, JCheckSum.class, writer);
         assertTrue("Error creating command", command != null);
