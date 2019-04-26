@@ -156,4 +156,3 @@ $ 9053614978990880232
 $ jchecksum -a sha-512 -e juid -f /home/user/MyClass.java
 $ 1214078597467355053
 ```
-
