@@ -18,10 +18,10 @@ Resolving deltas: 100% (54/54), done.
 ```
 
 #### 2. Package with maven 
-> Installation at ~/.m2 local maven repository is not needed.
+> Installation at ```~/.m2``` local maven repository is not needed unless you install [```jchecksum-ui```](https://github.com/apercova/jchecksum-ui) which requires jchecksum as maven dependency.
 ```bash
 $ cd jchecksum/
-$ mvn clean package
+$ mvn clean package [install]
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------------------------------------------------------------
