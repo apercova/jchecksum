@@ -4,6 +4,76 @@
 
 > Uses QuickCLI to leverage CLI command configuration. Check it out [here](https://github.com/apercova/QuickCLI).
 
+### Installation:
+#### 1. Clone repository
+```bash
+$ git clone https://github.com/apercova/jchecksum.git
+Cloning into 'jchecksum'...
+remote: Enumerating objects: 116, done.
+remote: Counting objects: 100% (116/116), done.
+remote: Compressing objects: 100% (52/52), done.
+remote: Total 227 (delta 26), reused 83 (delta 11), pack-reused 111
+Receiving objects: 100% (227/227), 33.55 KiB | 981.00 KiB/s, done.
+Resolving deltas: 100% (54/54), done.
+```
+
+#### 2. Package with maven 
+> Installation at ~/.m2 local maven repository is not needed.
+```bash
+$ cd jchecksum/
+$ mvn clean package
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building jchecksum 1.0.1904
+[INFO] ------------------------------------------------------------------------
+... [more log content] ...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 17.487 s
+[INFO] Finished at: 2019-04-25T18:35:30-05:00
+[INFO] Final Memory: 27M/195M
+[INFO] ------------------------------------------------------------------------
+```
+
+#### 3. Identify different installation artifacts located inside ```dist``` directory:
+- Javadoc jar: ```jchecksum-1.0.1904-javadoc.jar```
+- Sources jar: ```jchecksum-1.0.1904-sources.jar```
+- Executable jar: ```jchecksum-1.0.1904.jar```
+- Windows batch init script: ```jchecksum.cmd```
+- Linux bash init script: ```jchecksum.sh```
+```bash
+$ ls dist/|grep jchecksum
+jchecksum-1.0.1904-javadoc.jar
+jchecksum-1.0.1904-sources.jar
+jchecksum-1.0.1904.jar
+jchecksum.cmd
+jchecksum.sh
+```
+
+- Library dir: ```/lib``` with dependencies
+```bash
+$ ls dist/lib/ |grep .
+hamcrest-core-1.3.jar
+junit-4.12.jar
+quickcli-1.0.1904.jar
+```
+
+#### 4. Add ```dist``` dir to ```PATH``` enviroment variable and execute ```jchecksum``` command. Look at the usage examples below.
+ - On Windows:
+```bash 
+set PATH=C:\path\to\dist;%PATH%
+jchecksum
+d41d8cd98f00b204e9800998ecf8427e
+```
+ - On Linux
+```bash 
+$ PATH=/path/to/dist:$PATH
+$ jchecksum
+d41d8cd98f00b204e9800998ecf8427e
+```
+
 ### Usage: 
 ```bash
 $ jchecksum --help
