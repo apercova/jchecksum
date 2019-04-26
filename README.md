@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/apercova/jchecksum.svg?branch=master)](https://travis-ci.org/apercova/jchecksum)
 ## Java CLI utility for calculating hashes using java's MessageDigest class
 
-> Uses QuickCLI to leverage CLI command configuration. Check it out [here](https://github.com/apercova/QuickCLI).
+> Uses QuickCLI to leverage CLI command configuration. Check it out [here](https://github.com/apercova/QuickCLI).  
+> Check out the GUI implementation: [jshecksum-ui](https://github.com/apercova/jchecksum-ui).
 
 ## Installation:
 #### 1. Clone repository
