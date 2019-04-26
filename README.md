@@ -4,7 +4,7 @@
 
 > Uses QuickCLI to leverage CLI command configuration. Check it out [here](https://github.com/apercova/QuickCLI).
 
-### Installation:
+## Installation:
 #### 1. Clone repository
 ```bash
 $ git clone https://github.com/apercova/jchecksum.git
@@ -74,7 +74,7 @@ $ jchecksum
 d41d8cd98f00b204e9800998ecf8427e
 ```
 
-### Usage: 
+## Usage: 
 ```bash
 $ jchecksum --help
 [jchecksum]: Calculates checksum from file/text-caption
@@ -92,7 +92,7 @@ $ jchecksum --help
      -h             [--help]                  List available options
      -m             [--match]                 If set, checksum result gets compared against suplied pattern
 ```
-### Examples:
+## Examples:
 #### Calculate text hash
 - Calculate hex-encoded (default encoding) md5-hash of text ```password``` (Notice quoted text)
 ```bash
@@ -125,7 +125,7 @@ $ jchecksum -a sha1 -e b64 -t "password" -m "W6ph5Mm5Pz8GgiULbPgzG37mj9g="
 $ true
 ```
 
-### Encode-only source value
+#### Encode-only source value
 > jchecksum can be told to just encode source value both from file or inline-text.  
 - Encode inline text as follows:
 ```bash
@@ -138,7 +138,7 @@ $ jchecksum -f /home/user/file.txt -e b64 -eo
 $ TAAAAAEUAgAAAAAAwAAAAAAAAEabAAgAIAAAAHobqFSvDNQBehuoVK8M1AF6i9HOrwzUAT ...
 ```
 
-### Special java SerialVersionUID encoding
+#### Special java SerialVersionUID encoding
 > jchecksum can be told to generate java SerialVersionUID Long value just providing ```juid|JUID``` special encoding format as encoding argument.  
 > It works well in both hashing mode and encode-only mode but since hashing value is almost unique, it's recommended to use this mode.  
 - Encode-only mode:
